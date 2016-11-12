@@ -87,7 +87,7 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
-    console.log('microsoft body: ', body);
+    console.log(JSON.stringify(body, null, 2);
 }
 
 function sendPromptMessage(senderId, messageText) {
