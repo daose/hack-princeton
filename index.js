@@ -16,12 +16,7 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "http://api.reimaginebanking.com";
 const nessieKey = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
-<<<<<<< HEAD
-const rePattern = new RegExp(/\$(\d+)/);
-=======
-
 const rePattern = new RegExp(/\$(\d+\.\d\d)/);
->>>>>>> 476f36fede3f8d3f14f091d2244bb95b9727d48f
 
 //Firebase Init
 admin.initializeApp({
@@ -68,7 +63,7 @@ function handlePostback(sender, postback){
         if(sender !== snapshot.val()){
             userRef.child(sender).set(postback.payload);
         }
-    }
+    });
 }
 
 function broadcastMessage(sender, imagePayload) {
