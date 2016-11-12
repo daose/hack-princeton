@@ -58,22 +58,22 @@ function handlePostback(sender, postback){
 
 function broadcastMessage(sender, imagePayload) {
     console.log("image url: ", imagePayload.url);
-    request({
+    var options = {
         url: 'https://api.projectoxford.ai/vision/v1.0/ocr',
-        method: 'POST',
         headers: {
-            "Ocp-Apim-Suscription-Key": ocpKey
+            'Ocp-Apim-Suscription-Key': ocpKey
         },
         json: {
             url: imagePayload.url
         }
-    }, function(error, response, body) {
+    };
+    request(options, function(error, response, body) {
         if(error){
             console.log('Error sending message: ', error);
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
-        console.log("microsoft body: ", body);
+        ocrOnResponse(body);
     });
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
@@ -81,6 +81,10 @@ function broadcastMessage(sender, imagePayload) {
         }
         sendPromptMessage(users[i], "yes/no?");
     }
+}
+
+function ocrOnResponse(body) {
+    console.log('microsoft body: ', body);
 }
 
 function sendPromptMessage(senderId, messageText) {
