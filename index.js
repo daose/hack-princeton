@@ -98,7 +98,7 @@ function broadcastMessage(sender, imagePayload) {
 function ocrFindTotal(body, totalAmount) {
     for(var i in body) {
         if(typeof body[i] === 'object'){
-            totalAmount = ocrFindTotal(body[i]);
+            totalAmount = ocrFindTotal(body[i], totalAmount);
         } else {
             var value = body[i].toString();
             var matches = value.match(rePattern);
