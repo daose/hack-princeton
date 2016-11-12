@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const users = ['1077146965714361', '1253903971335322']
+const token = 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD'
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -20,6 +21,11 @@ app.get('/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
+    if(req.body.postback) {
+        broadcastMessage(req.body.sender.id);
+        res.sendStatus(200);
+        return;
+    }
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i];
@@ -43,7 +49,33 @@ app.post('/webhook/', function (req, res) {
 function broadcastMessage(sender) {
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) continue;
-        sendTextMessage(users[i], "prompt!");
+        sendPromptMessage(users[i], "yes/no?");
+    }
+}
+
+function sendPromptMessage(senderId, messageText) {
+    let messageData = {
+        recipient: {
+            id: senderId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: messageText,
+                    buttons: [{
+                        type: "postback",
+                        title: "yes",
+                        payload: "yes"
+                    }, {
+                        type: "postback",
+                        title: "no",
+                        payload: "no"
+                    }]
+                }
+            }
+        }
     }
 }
  
@@ -51,7 +83,7 @@ function sendTextMessage(recipientId, messageText) {
     let messageData = { text:messageText }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD' },
+        qs: { access_token: token },
         method: 'POST',
         json: {
             recipient: {id:recipientId},
@@ -64,32 +96,6 @@ function sendTextMessage(recipientId, messageText) {
             console.log('Error: ', response.body.error);
         }
     })
-}
-
-function callSendAPI(messageData) {
-  request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD' },
-    method: 'POST',
-    json: messageData
-
-  }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
-
-      console.log("Successfully sent generic message with id %s to recipient %s", 
-        messageId, recipientId);
-    } else {
-      console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
-    }
-  });  
-}
-
-function sendGenericMessage(recipientId, messageText) {
-  // To be expanded in later sections
 }
 
 // Spin up the server
