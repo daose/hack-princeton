@@ -126,22 +126,37 @@ function checkBalance(sender) {
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = split.child("splitter");
+    if(postback.payload === 'yes'){
+        userRef.once('value').then(function(snapshot) {
+            if((snapshot.numChildren() === users.length() - 1) && !snapshot.hasChild(sender)){
+                console.log("split called");
+            } else {
+                userRef.child(sender).set('yes');
+            }
+        });
+    }
+
+    /*
     //get the value of split.recepient
     split.child("receipient").once('value').then(function(snapshot) {
     //if the receipient tries to send money to himself, ignore it 
         if(sender !== snapshot.val()){
             userRef.child(sender).once('value').then(function(snap){
                 var senderResponse = snap.val();
-                if(senderResponse == undefined)counted++;
-                if((senderResponse == undefined || senderResponse==="no") && postback.payload==="yes") countedYes++;
-                if(senderResponse==="yes" && postback.payload==="no") countedYes--;
+                if(senderResponse === undefined) {
+                    counted++;
+                }
+                if((senderResponse === undefined || senderResponse==="no") && postback.payload==="yes"){ 
+                    countedYes++;
+                }
+                if(senderResponse === "yes" && postback.payload === "no"){
+                    countedYes--;
+                }
             });
-
             userRef.child(sender).set(postback.payload);
         }
     });
-
-    //if(counted===(user.length()-1)) transfers();
+    */
 }
 
 function broadcastMessage(sender, imagePayload) {
@@ -168,7 +183,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], "yes/no?");
+            sendPromptMessage(users[i], "Split a total of " + totalAmount + "?");
         }
     });
 }
@@ -256,7 +271,7 @@ function reset(sender, theAmount){
 }c
 
 function splitMoney(){
-
+//remember to clear split at the end
 }
 
 function getTheDate(){
