@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
         } else {
             if(event.message.attachments){
                 broadcastMessage(sender, event.message.attachments[0].payload);
-            } else if (event.message.text === "Checkbalance") {
+            } else if (event.message.text === "Check balance") {
                 checkBalance(sender);
             }
         }
@@ -70,7 +70,7 @@ function checkBalance(sender) {
                 console.log('Error: ', response.body.error);
             }
             console.log('body: ', body);
-            sendTextMessage(sender, body.balance);
+            sendTextMessage(sender, body.balance.toString());
         });
     });
 }
