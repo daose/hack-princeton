@@ -90,12 +90,13 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
-
     for(var i in body) {
         if(typeof body[i] === 'object'){
             ocrOnResponse(body[i]);
         } else {
-            console.log("leaf: " + body[i]);
+            if(body[i].length < 6){
+                console.log("leaf: " + body[i]);
+            }
         }
     }
 }
