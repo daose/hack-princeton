@@ -127,10 +127,12 @@ function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = split.child("splitter");
     if(postback.payload === 'yes'){
+        console.log("yes called");
         userRef.once('value').then(function(snapshot) {
             if((snapshot.numChildren() === users.length() - 1) && !snapshot.hasChild(sender)){
                 console.log("split called");
             } else {
+                console.log("attempt to add to splitter table");
                 userRef.child(sender).set('yes');
             }
         });
@@ -139,7 +141,7 @@ function handlePostback(sender, postback){
     /*
     //get the value of split.recepient
     split.child("receipient").once('value').then(function(snapshot) {
-    //if the receipient tries to send money to himself, ignore it 
+    //if the receipient tries to send money to himself, ignore it
         if(sender !== snapshot.val()){
             userRef.child(sender).once('value').then(function(snap){
                 var senderResponse = snap.val();
