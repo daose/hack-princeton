@@ -87,6 +87,15 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
+    for(var i = 0; i < body.length; i++){
+        var obj = body[i];
+        for(var key in obj){
+            if(obj.hasOwnProperty(key)){
+                var attrName = key;
+                var attrValue = obj[key];
+            }
+        }
+    }
     console.log(JSON.stringify(body, null, 2));
 }
 
