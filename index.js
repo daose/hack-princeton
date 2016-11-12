@@ -48,11 +48,33 @@ app.post('/webhook/', function (req, res) {
         } else {
             if(event.message.attachments){
                 broadcastMessage(sender, event.message.attachments[0].payload);
+            } else if (event.message.text === "balance") {
+                checkBalance(sender);
             }
         }
     }
     res.sendStatus(200);
 });
+
+function checkBalance(sender) {
+    var accountId;
+    dbRef.child("table").once(sender).then(function(snapshot) {
+        accountId = snapshot.val();
+    });
+    let nessieAccountEndpoint = nessie + "/accounts/" + accountId;
+    request({
+        url: nessieAccountEndpoint,
+        qs: {key: nessieKey},
+        method: 'GET'
+    }, function(error, response, body) {
+        if(error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+        console.log('body: ', body);
+    });
+}
 
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
