@@ -70,10 +70,8 @@ app.post('/webhook/', function (req, res) {
 
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
-    var userRef = dbRef.child(sender);
-    userRef.set({
-        "response": postback.payload
-    });
+    var userRef = split.child("splitter");
+    userRef.child(sender).set(postback);
 }
 
 function broadcastMessage(sender, imagePayload) {
@@ -99,7 +97,7 @@ function broadcastMessage(sender, imagePayload) {
         ocrOnResponse(body);
     });
 
-    clear();
+    reset(sender, 30);
     
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
@@ -178,8 +176,13 @@ function sendTextMessage(recipientId, messageText) {
     });
 }
 
-function clear(){
-    split.set({});
+function reset(sender, theAmount){
+    var options = {
+        recipient : sender.id,
+        amount : theAmount
+    }
+
+    split.set(options);
 }
 
 
