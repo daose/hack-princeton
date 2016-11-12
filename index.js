@@ -102,14 +102,16 @@ function ocrOnResponse(body) {
             var value = body[i].toString();
             var matches = value.match(rePattern);
             if(matches){
+                console.log("value: ", value);
                 var amount = parseFloat(matches[1]);
+                console.log("amount: ", amount);
                 if(amount > totalAmount){
                     totalAmount = amount;
                 }
             }
         }
     }
-    console.log(totalAmount);
+    console.log("totalAmount: ", totalAmount);
 }
 
 function sendPromptMessage(senderId, messageText) {
