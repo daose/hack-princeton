@@ -126,7 +126,12 @@ function checkBalance(sender) {
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = split.child("splitter");
-    split.child('splitter').child(sender).set('yes');
+    if(postback.payload === 'yes'){
+        split.child('splitter').child(sender).set('yes');
+        split.once('value').then(function(snapshot) {
+            console.log(snapshot.val());
+        });
+    }
     /*
     if(postback.payload === 'yes'){
         console.log("yes called");
