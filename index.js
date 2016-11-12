@@ -166,8 +166,10 @@ function sendTextMessage(recipientId, messageText) {
 
 function reset(sender, theAmount){
     
-    split.child(recipient).set(sender.id);
-    split.child(amount).set(theAmount);
+    split.set({
+        "receipient" : sender.id,
+        "amount" : theAmount
+    });
     
 }
 
