@@ -268,7 +268,7 @@ function reset(sender, theAmount){
         "receipient" : sender,
         "amount" : theAmount
     });
-}c
+}
 
 function splitMoney(){
 //remember to clear split at the end
