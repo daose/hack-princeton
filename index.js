@@ -9,9 +9,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
-const users = ['1077146965714361', '1253903971335322'];
+const users = ['1077146965714361', '1253903971335322' , '1249520891776599'];
+const customerId = ['5827562a360f81f104547b3e', '582756a2360f81f104547b3f', '5827570d360f81f104547b40'];
 const token = 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD';
 const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
+const nessie = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
 
 //Firebase Init
