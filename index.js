@@ -128,13 +128,15 @@ function handlePostback(sender, postback){
     var userRef = split.child("splitter");
     if(postback.payload === 'yes'){
         console.log("yes called");
-        userRef.once('value').then(function(snapshot) {
-            if((snapshot.numChildren() === users.length() - 1) && !snapshot.hasChild(sender)){
-                console.log("split called");
-            } else {
-                console.log("attempt to add to splitter table");
-                userRef.child(sender).set('yes');
+        split.once('value').then(function(snapshot) {
+            if(snapshot.hasChild('splitter')){
+                if(snapshot.child('splitter').numChildren() === users.length() - 1) {
+                    if(!snapshot.child('splitter').hasChild(sender)){
+                        console.log('split called');
+                    } 
+                }
             }
+            snapshot.child('splitter').child(sender).set('yes');
         });
     }
 
