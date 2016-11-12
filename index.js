@@ -79,7 +79,9 @@ function broadcastMessage(sender, imagePayload) {
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
-        ocrOnResponse(body);
+        var totalAmount = ocrFindTotal(body, 0);
+        console.log("total: " , totalAmount);
+
     });
 
     var tempAmount= 30;
@@ -93,25 +95,22 @@ function broadcastMessage(sender, imagePayload) {
     }
 }
 
-function ocrOnResponse(body) {
-    var totalAmount;
+function ocrFindTotal(body, totalAmount) {
     for(var i in body) {
         if(typeof body[i] === 'object'){
-            ocrOnResponse(body[i]);
+            totalAmount = ocrFindTotal(body[i]);
         } else {
             var value = body[i].toString();
             var matches = value.match(rePattern);
             if(matches){
-                console.log("value: ", value);
                 var amount = parseFloat(matches[1]);
-                console.log("amount: ", amount);
                 if(amount > totalAmount){
                     totalAmount = amount;
                 }
             }
         }
     }
-    console.log("totalAmount: ", totalAmount);
+    return totalAmount;
 }
 
 function sendPromptMessage(senderId, messageText) {
