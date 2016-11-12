@@ -101,6 +101,7 @@ function ocrOnResponse(body) {
         } else {
             var value = body[i].toString();
             if(value.match(rePattern)){
+                console.log("leaf : ", body[i]);
                 var amount = parseFloat(body[i]);
                 if(amount > totalAmount){
                     totalAmount = amount;
