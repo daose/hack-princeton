@@ -53,7 +53,7 @@ function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = dbRef.child(sender);
     userRef.set({
-        "sender": sender
+        "sender": sender,
         "response": postback.payload
     });
 }
