@@ -16,6 +16,22 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
 
+// var users =[
+//     {
+//         fbID: '1077146965714361',
+//         customerId: '5827562a360f81f104547b3e'
+//     },
+//     {
+//         fbID: '1253903971335322',
+//         customerId: '582756a2360f81f104547b3f'
+//     },
+//     {
+//         fbID: '1249520891776599',
+//         customerId: '5827570d360f81f104547b40'
+//     }
+
+// ]
+
 //Firebase Init
 admin.initializeApp({
      credential: admin.credential.cert(serviceAccount),
@@ -23,6 +39,7 @@ admin.initializeApp({
 });
 var db = admin.database();
 var dbRef = db.ref("bot");
+var split = dbRef.child("split");
 
 //Server Init
 app.set('port', (process.env.PORT || 5000));
@@ -80,6 +97,9 @@ function broadcastMessage(sender, imagePayload) {
         }
         ocrOnResponse(body);
     });
+
+    clear();
+    
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
             continue;
@@ -148,6 +168,11 @@ function sendTextMessage(recipientId, messageText) {
         }
     });
 }
+
+function clear(){
+    split.set({});
+}
+
 
 // Spin up the server
 app.listen(app.get('port'), function() {
