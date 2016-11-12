@@ -16,21 +16,7 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
 
-// var users =[
-//     {
-//         fbID: '1077146965714361',
-//         customerId: '5827562a360f81f104547b3e'
-//     },
-//     {
-//         fbID: '1253903971335322',
-//         customerId: '582756a2360f81f104547b3f'
-//     },
-//     {
-//         fbID: '1249520891776599',
-//         customerId: '5827570d360f81f104547b40'
-//     }
-
-// ]
+const rePattern = new RegExp(/\$?(\d+(\.\d\d)?)/);
 
 //Firebase Init
 admin.initializeApp({
@@ -112,7 +98,8 @@ function ocrOnResponse(body) {
         if(typeof body[i] === 'object'){
             ocrOnResponse(body[i]);
         } else {
-            if(body[i].length < 6){
+            var value = body[i].toString();
+            if(value.match(rePattern)){
                 console.log("leaf: " + body[i]);
             }
         }
