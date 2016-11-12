@@ -25,6 +25,7 @@ admin.initializeApp({
 });
 var db = admin.database();
 var dbRef = db.ref("bot");
+var split = dbRef.child("split");
 
 //Server Init
 app.set('port', (process.env.PORT || 5000));
@@ -83,6 +84,9 @@ function broadcastMessage(sender, imagePayload) {
         console.log(JSON.stringify(body, null, 2));
         ocrOnResponse(body);
     });
+
+    clear();
+    
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
             continue;
@@ -159,6 +163,11 @@ function sendTextMessage(recipientId, messageText) {
         }
     });
 }
+
+function clear(){
+    split.set({});
+}
+
 
 // Spin up the server
 app.listen(app.get('port'), function() {
