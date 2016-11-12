@@ -1,7 +1,7 @@
 'use strict'
 
 const admin = require('firebase-admin')
-const serviceAccount = require('hack-princeton-firebase-adminsdk-x9bdc-d39b75de21.json')
+const serviceAccount = require('./hack-princeton-firebase-adminsdk-x9bdc-d39b75de21.json')
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
