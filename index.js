@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
         } else {
             if(event.message.attachments){
                 broadcastMessage(sender, event.message.attachments[0].payload);
-            } else if (event.message.text === "balance") {
+            } else if (event.message.text === "Checkbalance") {
                 checkBalance(sender);
             }
         }
@@ -58,7 +58,7 @@ app.post('/webhook/', function (req, res) {
 
 function checkBalance(sender) {
     var accountId;
-    dbRef.child("table").once(sender).then(function(snapshot) {
+    dbRef.child("table").child(sender).once("value").then(function(snapshot) {
         accountId = snapshot.val();
     });
     let nessieAccountEndpoint = nessie + "/accounts/" + accountId;
