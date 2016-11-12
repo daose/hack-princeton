@@ -16,7 +16,12 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "http://api.reimaginebanking.com";
 const nessieKey = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
+<<<<<<< HEAD
 const rePattern = new RegExp(/\$(\d+)/);
+=======
+
+const rePattern = new RegExp(/\$(\d+\.\d\d)/);
+>>>>>>> 476f36fede3f8d3f14f091d2244bb95b9727d48f
 
 //Firebase Init
 admin.initializeApp({
@@ -85,36 +90,34 @@ function broadcastMessage(sender, imagePayload) {
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
-        ocrOnResponse(body);
-    });
-
-    var tempAmount= 30;
-    reset(sender, tempAmount);
-    
-    for(var i = 0; i < users.length; i++){
-        if(users[i] === sender) {
-            continue;
+        var totalAmount = ocrFindTotal(body, 0);
+        reset(sender, totalAmount);
+         
+        for(var i = 0; i < users.length; i++){
+            if(users[i] === sender) {
+                continue;
+            }
+            sendPromptMessage(users[i], "yes/no?");
         }
-        sendPromptMessage(users[i], "yes/no?");
-    }
+    });
 }
 
-function ocrOnResponse(body) {
-    var totalAmount;
+function ocrFindTotal(body, totalAmount) {
     for(var i in body) {
         if(typeof body[i] === 'object'){
-            ocrOnResponse(body[i]);
+            totalAmount = ocrFindTotal(body[i], totalAmount);
         } else {
             var value = body[i].toString();
-            if(value.match(rePattern)){
-                var amount = parseFloat(body[i]);
+            var matches = value.match(rePattern);
+            if(matches){
+                var amount = parseFloat(matches[1]);
                 if(amount > totalAmount){
                     totalAmount = amount;
                 }
             }
         }
     }
-    console.log(totalAmount);
+    return totalAmount;
 }
 
 function sendPromptMessage(senderId, messageText) {
@@ -154,7 +157,7 @@ function sendPromptMessage(senderId, messageText) {
         }
     });
 }
- 
+
 function sendTextMessage(recipientId, messageText) {
     let messageData = { text:messageText };
     request({
