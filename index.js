@@ -16,7 +16,6 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "http://api.reimaginebanking.com";
 const nessieKey = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
-
 const rePattern = new RegExp(/\$(\d+\.\d\d)/);
 
 //Firebase Init
@@ -28,6 +27,7 @@ var db = admin.database();
 var dbRef = db.ref("bot");
 var split = dbRef.child("split");
 
+var countedYes=0;
 var counted=0;
 
 //Server Init
@@ -51,11 +51,32 @@ app.post('/webhook/', function (req, res) {
         } else {
             if(event.message.attachments){
                 broadcastMessage(sender, event.message.attachments[0].payload);
+            } else if (event.message.text.toLowerCase() === "check balance") {
+                checkBalance(sender);
             }
         }
     }
     res.sendStatus(200);
 });
+
+function checkBalance(sender) {
+    dbRef.child("table").child(sender).once("value").then(function(snapshot) {
+        let nessieAccountEndpoint = nessie + "/accounts/" + snapshot.val();
+        request({
+            url: nessieAccountEndpoint,
+            qs: {key: nessieKey},
+            method: 'GET'
+        }, function(error, response, body) {
+            if(error) {
+                console.log('Error sending message: ', error);
+            } else if (response.body.error) {
+                console.log('Error: ', response.body.error);
+            }
+            var json = JSON.parse(body);
+            sendTextMessage(sender, json.balance);
+        });
+    });
+}
 
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
@@ -66,18 +87,19 @@ function handlePostback(sender, postback){
         if(sender !== snapshot.val()){
             userRef.child(sender).once('value').then(function(snap){
                 var senderResponse = snap.val();
-                if((senderResponse == undefined || senderResponse==="no") && postback.payload==="yes") counted++;
-                if(senderResponse==="yes" && postback.payload==="no") counted--;
+                if(senderResponse == undefined)counted++;
+                if((senderResponse == undefined || senderResponse==="no") && postback.payload==="yes") countedYes++;
+                if(senderResponse==="yes" && postback.payload==="no") countedYes--;
             });
 
             userRef.child(sender).set(postback.payload);
         }
     });
+
+    //if(counted===(user.length()-1)) transfers();
 }
 
 function broadcastMessage(sender, imagePayload) {
-    console.log("image url: ", imagePayload.url);
-    console.log('ocp url: ', ocpUrl);
     request({
         method: 'POST',
         url: ocpUrl,
@@ -182,12 +204,10 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function reset(sender, theAmount){
-    
     split.set({
         "receipient" : sender,
         "amount" : theAmount
     });
-    
 }
 
 function splitMoney(){
