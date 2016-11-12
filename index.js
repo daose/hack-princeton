@@ -78,7 +78,7 @@ function broadcastMessage(sender, imagePayload) {
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
-        ocrOnResponse(body);
+        ocrOnResponse(JSON.stringify(body, null, 2));
     });
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
@@ -89,16 +89,13 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
-    for(var i = 0; i < body.length; i++){
-        var obj = body[i];
-        for(var key in obj){
-            if(obj.hasOwnProperty(key)){
-                var attrName = key;
-                var attrValue = obj[key];
-            }
+    for(var i in body) {
+        if(typeof body[i] === 'object'){
+            ocrOnResponse(body[i]);
+        } else {
+            console.log("leaf: " + body[i]);
         }
     }
-    console.log(JSON.stringify(body, null, 2));
 }
 
 function sendPromptMessage(senderId, messageText) {
