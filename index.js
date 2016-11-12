@@ -126,6 +126,8 @@ function checkBalance(sender) {
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = split.child("splitter");
+    split.child('splitter').child(sender).set('yes');
+    /*
     if(postback.payload === 'yes'){
         console.log("yes called");
         split.once('value').then(function(snapshot) {
@@ -139,6 +141,7 @@ function handlePostback(sender, postback){
             snapshot.child('splitter').child(sender).set('yes');
         });
     }
+    */
 
     /*
     //get the value of split.recepient
