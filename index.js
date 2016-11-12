@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 /*jshint node: true*/
+/*jshint unused: false */
 
 'use strict';
 const admin = require('firebase-admin');
@@ -16,16 +17,12 @@ admin.initializeApp({
      credential: admin.credential.cert(serviceAccount),
      databaseURL: "https://hack-princeton.firebaseio.com"
 });
-
 var db = admin.database();
 var dbRef = db.ref("bot");
 
+//Server Init
 app.set('port', (process.env.PORT || 5000));
-
-// Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
-
-// Process application/json
 app.use(bodyParser.json());
 
 // Index route
@@ -42,9 +39,8 @@ app.post('/webhook/', function (req, res) {
         if(event.postback){
             handlePostback(sender, event.postback);
         } else {
-            if(sender === users[0]){
-                console.log("temp master sender detected");
-                broadcastMessage(sender);
+            if(event.message.attachments){
+                broadcastMessage(sender, events.message.attachments[0].payload);
             }
         }
     }
@@ -55,12 +51,12 @@ function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = dbRef.child(sender);
     userRef.set({
-        "sender": sender,
         "response": postback.payload
     });
 }
 
-function broadcastMessage(sender) {
+function broadcastMessage(sender, imagePayload) {
+    console.log("image url: ", imagePayload.url);
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
             continue;
