@@ -16,7 +16,7 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
 
-const rePattern = new RegExp(/\$(\d+)/);
+const rePattern = new RegExp(/\$(\d+\.\d\d)/);
 
 //Firebase Init
 admin.initializeApp({
@@ -100,9 +100,9 @@ function ocrOnResponse(body) {
             ocrOnResponse(body[i]);
         } else {
             var value = body[i].toString();
-            if(value.match(rePattern)){
-                console.log("leaf : ", body[i]);
-                var amount = parseFloat(body[i]);
+            var matches = value.match(rePattern);
+            if(matches){
+                var amount = parseFloat(matches[1]);
                 if(amount > totalAmount){
                     totalAmount = amount;
                 }
