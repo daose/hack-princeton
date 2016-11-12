@@ -56,6 +56,51 @@ app.post('/webhook/', function (req, res) {
     res.sendStatus(200);
 });
 
+
+function deposit(accountId, amount){
+    let nessieDepositEndpoint = nessie + "/accounts/" + accountId + "/deposits";
+    request({
+        url: nessieDepositEndpoint,
+        qs: {key: nessieKey},
+        method: 'POST',
+        json: {
+            medium: 'balance',
+            transaction_date: "2016-1-1",
+            amount: amount,
+            description: "na"
+        }
+    }, function(error, response, body) {
+        if(error){
+            console.log('Error sending message: ', error);
+        } else if(response.body.error){
+            console.log('Error: ', response.body.error);
+        }
+        console.log("deposit: ", body);
+    });
+}
+
+function withdrawal(accountId, amount){
+    let nessieWithdrawalEndpoint = nessie + "/accounts/" + accountId + "/withdrawals";
+    request({
+        url: nessieWithdrawalEndpoint,
+        qs: {key: nessieKey},
+        method: 'POST',
+        json: {
+            medium: 'balance',
+            transaction_date: "2016-1-1",
+            amount: amount,
+            description: "na"
+        }
+    }, function(error, response, body) {
+        if(error){
+            console.log('Error sending message: ', error);
+        } else if(response.body.error){
+            console.log('Error: ', response.body.error);
+        }
+        console.log("withdrawal: ", body);
+    });
+}
+
 function checkBalance(sender) {
     dbRef.child("table").child(sender).once("value").then(function(snapshot) {
         let nessieAccountEndpoint = nessie + "/accounts/" + snapshot.val();
