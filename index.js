@@ -22,29 +22,26 @@ app.get('/', function (req, res) {
 
 app.post('/webhook/', function (req, res) {
     if(req.body.postback) {
-        broadcastMessage(req.body.sender.id);
+        handlePostback(req.body.sender.id);
         res.sendStatus(200);
-        return;
-    }
-    let messaging_events = req.body.entry[0].messaging
-    for (let i = 0; i < messaging_events.length; i++) {
-        let event = req.body.entry[0].messaging[i];
-        let sender = event.sender.id;
-        if(sender === users[0]){
-            console.log('master sender detected');
-            broadcastMessage(sender);
+    } else {
+        let messaging_events = req.body.entry[0].messaging
+        for (let i = 0; i < messaging_events.length; i++) {
+            let event = req.body.entry[0].messaging[i];
+            let sender = event.sender.id;
+            console.log('sender id: ' + sender);
+            if(sender === users[0]){
+                console.log('master sender detected');
+                broadcastMessage(sender);
+            }
         }
-
-        /*
-        console.log("sender: ", sender);
-        if (event.message && event.message.text) {
-            let text = event.message.text
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-        }
-        */
     }
     res.sendStatus(200)
 });
+
+function handlePostback(senderId){
+    console.log("postback sender id: ", senderId);
+}
 
 function broadcastMessage(sender) {
     for(var i = 0; i < users.length; i++){
