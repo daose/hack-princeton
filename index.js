@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
-    console.log(req.body);
+    console.log(req.body.entry[0]);
     if(req.body.entry[0].postback) {
         handlePostback(req.body.entry[0].sender.id);
         res.sendStatus(200);
