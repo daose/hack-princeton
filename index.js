@@ -19,33 +19,16 @@ app.get('/', function (req, res) {
 })
 
 app.get('/webhook/', function (req, res) {
-  var data = req.body;
-
-  // Make sure this is a page subscription
-  if (data.object === 'page') {
-
-    // Iterate over each entry - there may be multiple if batched
-    data.entry.forEach(function(entry) {
-      var pageID = entry.id;
-      var timeOfEvent = entry.time;
-
-      // Iterate over each messaging event
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-          receivedMessage(event);
-        } else {
-          console.log("Webhook received unknown event: ", event);
+    let messaging_events = req.body.entry[0].messaging
+    for (let i = 0; i < messaging_events.length; i++) {
+        let event = req.body.entry[0].messaging[i]
+        let sender = event.sender.id
+        if (event.message && event.message.text) {
+            let text = event.message.text
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
-      });
-    });
-
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
-    res.sendStatus(200);
-  }
+    }
+    res.sendStatus(200)
 })
 
   
@@ -82,16 +65,22 @@ function receivedMessage(event) {
 }
 
 function sendTextMessage(recipientId, messageText) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText
-    }
-  };
-
-  callSendAPI(messageData);
+    let messageData = { text:messageText }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD' },
+        method: 'POST',
+        json: {
+            recipient: {id:recipentId},
+            message: messageData
+        }
+    }, function(error, response, body) {
+        if(error){
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    })
 }
 
 function callSendAPI(messageData) {
