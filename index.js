@@ -66,14 +66,14 @@ function broadcastMessage(sender, imagePayload) {
         },
         json: {
             url: imagePayload.url
-        }, function(error, response, body) {
-            if(error){
-                console.log('Error sending message: ', error);
-            } else if (response.body.error){
-                console.log('Error: ', response.body.error);
-            }
-            console.log("microsoft body: ", body);
         }
+    }, function(error, response, body) {
+        if(error){
+            console.log('Error sending message: ', error);
+        } else if (response.body.error){
+            console.log('Error: ', response.body.error);
+        }
+        console.log("microsoft body: ", body);
     });
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
