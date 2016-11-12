@@ -95,16 +95,21 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
+    var totalAmount;
     for(var i in body) {
         if(typeof body[i] === 'object'){
             ocrOnResponse(body[i]);
         } else {
             var value = body[i].toString();
             if(value.match(rePattern)){
-                console.log("leaf: " + body[i]);
+                var amount = parseFloat(body[i]);
+                if(amount > totalAmount){
+                    totalAmount = amount;
+                }
             }
         }
     }
+    console.log(totalAmount);
 }
 
 function sendPromptMessage(senderId, messageText) {
