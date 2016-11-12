@@ -57,7 +57,7 @@ app.post('/webhook/', function (req, res) {
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = split.child("splitter");
-    userRef.child(sender).set(postback);
+    userRef.child(sender).set(postback.payload);
 }
 
 function broadcastMessage(sender, imagePayload) {
@@ -83,7 +83,8 @@ function broadcastMessage(sender, imagePayload) {
         ocrOnResponse(body);
     });
 
-    reset(sender, 30);
+    var tempAmount= 30;
+    reset(sender, tempAmount);
     
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
