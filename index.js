@@ -52,11 +52,9 @@ app.post('/webhook/', function (req, res) {
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = dbRef.child(sender);
-    if(userRef == NULL){
-        console.log("something went wrong");
-    }
     userRef.set({
         "sender": sender
+        "response": postback.payload
     });
 }
 
