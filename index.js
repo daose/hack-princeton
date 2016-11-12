@@ -165,14 +165,11 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function reset(sender, theAmount){
-    var options = {
-        recipient : sender.id,
-        amount : theAmount
-    }
-
-    split.set(options);
+    
+    split.child(recipient).set(sender.id);
+    split.child(amount).set(theAmount);
+    
 }
-
 
 // Spin up the server
 app.listen(app.get('port'), function() {
