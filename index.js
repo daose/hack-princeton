@@ -78,7 +78,8 @@ function broadcastMessage(sender, imagePayload) {
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
-        ocrOnResponse(JSON.stringify(body, null, 2));
+        console.log(JSON.stringify(body, null, 2));
+        ocrOnResponse(body);
     });
     for(var i = 0; i < users.length; i++){
         if(users[i] === sender) {
@@ -89,6 +90,7 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
+
     for(var i in body) {
         if(typeof body[i] === 'object'){
             ocrOnResponse(body[i]);
