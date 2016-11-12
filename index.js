@@ -62,6 +62,7 @@ function checkBalance(sender) {
         accountId = snapshot.val();
     });
     let nessieAccountEndpoint = nessie + "/accounts/" + accountId;
+    console.log("endpoint: ", nessieAccountEndpoint);
     request({
         url: nessieAccountEndpoint,
         qs: {key: nessieKey},
@@ -73,6 +74,7 @@ function checkBalance(sender) {
             console.log('Error: ', response.body.error);
         }
         console.log('body: ', body);
+        sendTextMessage(sender, body.balance);
     });
 }
 
