@@ -63,7 +63,7 @@ function broadcastMessage(sender, imagePayload) {
     request({
         url: ocpUrl,
         qs: {
-            Ocp_Anim_Subscription_Key: ocpKey
+            'Ocp-Anim-Subscription-Key': ocpKey
         },
         method: 'POST',
         json: {
