@@ -68,7 +68,7 @@ function deposit(accountId, amount){
         method: 'POST',
         json: {
             medium: 'balance',
-            transaction_date: "2016-1-1",
+            transaction_date: getTheDate(),
             amount: amount,
             description: "na"
         }
@@ -90,7 +90,7 @@ function withdrawal(accountId, amount){
         method: 'POST',
         json: {
             medium: 'balance',
-            transaction_date: "2016-1-1",
+            transaction_date: getTheDate(),
             amount: amount,
             description: "na"
         }
@@ -253,12 +253,17 @@ function reset(sender, theAmount){
         "receipient" : sender,
         "amount" : theAmount
     });
-}
+}c
 
 function splitMoney(){
 
 }
 
+function getTheDate(){
+    var d = new Date();
+    var theDate= d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+    return theDate;
+}
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'));
