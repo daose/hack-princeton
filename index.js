@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+const users = ['1077146965714361', '1253903971335322']
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -21,16 +22,29 @@ app.get('/', function (req, res) {
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
-        let event = req.body.entry[0].messaging[i]
-        let sender = event.sender.id
+        let event = req.body.entry[0].messaging[i];
+        let sender = event.sender.id;
+        if(sender === users[0]){
+            console.log('master sender detected');
+            broadcastMessage(sender);
+        }
+
+        /*
         console.log("sender: ", sender);
         if (event.message && event.message.text) {
             let text = event.message.text
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
+        */
     }
     res.sendStatus(200)
 });
+
+function broadcastMessage(sender) {
+    for(var i = 0; i < users.length; i++){
+        sendTextMessage(users[i], "prompt!");
+    }
+}
  
 function sendTextMessage(recipientId, messageText) {
     let messageData = { text:messageText }
