@@ -95,6 +95,7 @@ function broadcastMessage(sender, imagePayload) {
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
+        console.log(JSON.stringify(body, null, 2));
         ocrOnResponse(body);
     });
 
@@ -109,7 +110,15 @@ function broadcastMessage(sender, imagePayload) {
 }
 
 function ocrOnResponse(body) {
-    console.log(JSON.stringify(body, null, 2));
+    for(var i in body) {
+        if(typeof body[i] === 'object'){
+            ocrOnResponse(body[i]);
+        } else {
+            if(body[i].length < 6){
+                console.log("leaf: " + body[i]);
+            }
+        }
+    }
 }
 
 function sendPromptMessage(senderId, messageText) {
