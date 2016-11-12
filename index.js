@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
         } else {
             if(event.message.attachments){
                 broadcastMessage(sender, event.message.attachments[0].payload);
-            } else if (event.message.text === "Check balance") {
+            } else if (event.message.text.toLowerCase() === "check balance") {
                 checkBalance(sender);
             }
         }
@@ -69,7 +69,6 @@ function checkBalance(sender) {
             } else if (response.body.error) {
                 console.log('Error: ', response.body.error);
             }
-            console.log('body: ', body);
             var json = JSON.parse(body);
             sendTextMessage(sender, json.balance);
         });
@@ -89,8 +88,6 @@ function handlePostback(sender, postback){
 }
 
 function broadcastMessage(sender, imagePayload) {
-    console.log("image url: ", imagePayload.url);
-    console.log('ocp url: ', ocpUrl);
     request({
         method: 'POST',
         url: ocpUrl,
@@ -195,12 +192,10 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function reset(sender, theAmount){
-    
     split.set({
         "receipient" : sender,
         "amount" : theAmount
     });
-    
 }
 
 // Spin up the server
