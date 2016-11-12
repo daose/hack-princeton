@@ -100,7 +100,8 @@ function ocrOnResponse(body) {
         if(typeof body[i] === 'object'){
             ocrOnResponse(body[i]);
         } else {
-            if(body[i].match(rePattern)){
+            var value = body[i].toString();
+            if(value.match(rePattern)){
                 console.log("leaf: " + body[i]);
             }
         }
