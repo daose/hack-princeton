@@ -80,19 +80,15 @@ function broadcastMessage(sender, imagePayload) {
             console.log('Error: ', response.body.error);
         }
         var totalAmount = ocrFindTotal(body, 0);
-        console.log("total: " , totalAmount);
-
-    });
-
-    var tempAmount= 30;
-    reset(sender, tempAmount);
-    
-    for(var i = 0; i < users.length; i++){
-        if(users[i] === sender) {
-            continue;
+        reset(sender, totalAmount);
+         
+        for(var i = 0; i < users.length; i++){
+            if(users[i] === sender) {
+                continue;
+            }
+            sendPromptMessage(users[i], "yes/no?");
         }
-        sendPromptMessage(users[i], "yes/no?");
-    }
+    });
 }
 
 function ocrFindTotal(body, totalAmount) {
@@ -150,7 +146,7 @@ function sendPromptMessage(senderId, messageText) {
         }
     });
 }
- 
+
 function sendTextMessage(recipientId, messageText) {
     let messageData = { text:messageText };
     request({
