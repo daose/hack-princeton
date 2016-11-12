@@ -16,12 +16,8 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "http://api.reimaginebanking.com";
 const nessieKey = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
-<<<<<<< HEAD
-const rePattern = new RegExp(/\$(\d+)/);
-=======
 
 const rePattern = new RegExp(/\$(\d+\.\d\d)/);
->>>>>>> 476f36fede3f8d3f14f091d2244bb95b9727d48f
 
 //Firebase Init
 admin.initializeApp({
@@ -31,6 +27,8 @@ admin.initializeApp({
 var db = admin.database();
 var dbRef = db.ref("bot");
 var split = dbRef.child("split");
+
+var counted=0;
 
 //Server Init
 app.set('port', (process.env.PORT || 5000));
@@ -66,9 +64,15 @@ function handlePostback(sender, postback){
     split.child("receipient").once('value').then(function(snapshot) {
     //if the receipient tries to send money to himself, ignore it 
         if(sender !== snapshot.val()){
+            userRef.child(sender).once('value').then(function(snap){
+                var senderResponse = snap.val();
+                if((senderResponse == undefined || senderResponse==="no") && postback.payload==="yes") counted++;
+                if(senderResponse==="yes" && postback.payload==="no") counted--;
+            });
+
             userRef.child(sender).set(postback.payload);
         }
-    }
+    });
 }
 
 function broadcastMessage(sender, imagePayload) {
@@ -184,6 +188,10 @@ function reset(sender, theAmount){
         "amount" : theAmount
     });
     
+}
+
+function splitMoney(){
+
 }
 
 // Spin up the server
