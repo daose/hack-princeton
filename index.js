@@ -62,8 +62,9 @@ function broadcastMessage(sender, imagePayload) {
     console.log('ocp url: ', ocpUrl);
     request({
         url: ocpUrl,
-        qs: {
-            'Ocp-Anim-Subscription-Key': ocpKey
+        headers: {
+            'Ocp-Anim-Subscription-Key': ocpKey,
+            'Content-Type': 'application/json'
         },
         method: 'POST',
         json: {
