@@ -42,6 +42,7 @@ app.post('/webhook/', function (req, res) {
 
 function broadcastMessage(sender) {
     for(var i = 0; i < users.length; i++){
+        if(users[i] === sender) continue;
         sendTextMessage(users[i], "prompt!");
     }
 }
