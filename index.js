@@ -12,7 +12,7 @@ const app = express();
 const users = ['1077146965714361', '1253903971335322'];
 const token = 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD';
 const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
-const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr?suscription-key=' + ocpKey;
+const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr&suscription-key=' + ocpKey;
 
 //Firebase Init
 admin.initializeApp({
@@ -59,6 +59,7 @@ function handlePostback(sender, postback){
 
 function broadcastMessage(sender, imagePayload) {
     console.log("image url: ", imagePayload.url);
+    console.log('ocp url: ', ocpUrl);
     request({
         url: ocpUrl,
         method: 'POST',
