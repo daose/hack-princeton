@@ -79,7 +79,6 @@ function broadcastMessage(sender, imagePayload) {
         } else if (response.body.error){
             console.log('Error: ', response.body.error);
         }
-        console.log(JSON.stringify(body, null, 2));
         ocrOnResponse(body);
     });
 
