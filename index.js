@@ -50,8 +50,14 @@ app.post('/webhook/', function (req, res) {
 });
 
 function handlePostback(sender, postback){
+    console.log("handlePostback: ", postback);
     var userRef = dbRef.child(sender);
-    userRef.set(postback);
+    if(userRef == NULL){
+        console.log("something went wrong");
+    }
+    userRef.set({
+        "sender": sender
+    });
 }
 
 function broadcastMessage(sender) {
