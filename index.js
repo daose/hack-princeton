@@ -59,9 +59,10 @@ app.post('/webhook/', function (req, res) {
 function checkBalance(sender) {
     var accountId;
     dbRef.child("table").child(sender).once("value").then(function(snapshot) {
+        console.log("snapshot: ", snapshot.val());
         accountId = snapshot.val();
     });
-    let nessieAccountEndpoint = nessie + "/accounts/" + accountId;
+    let nessieAccountEndpoint = nessie + "/accounts/" + accountId.toString();
     console.log("endpoint: ", nessieAccountEndpoint);
     request({
         url: nessieAccountEndpoint,
