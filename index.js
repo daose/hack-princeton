@@ -40,7 +40,7 @@ app.post('/webhook/', function (req, res) {
             handlePostback(sender, event.postback);
         } else {
             if(event.message.attachments){
-                broadcastMessage(sender, events.message.attachments[0].payload);
+                broadcastMessage(sender, event.message.attachments[0].payload);
             }
         }
     }
