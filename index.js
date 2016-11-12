@@ -126,17 +126,12 @@ function checkBalance(sender) {
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     var userRef = split.child("splitter");
-    var willSplit = false;
-    if(postback.payload === "yes"){
-        willSplit = true;
-    }
-    if(willSplit){
+    if(postback.payload === 'yes'){
         userRef.once('value').then(function(snapshot) {
             if((snapshot.numChildren() === users.length() - 1) && !snapshot.hasChild(sender)){
-                //in other words, adding current sender will trigger split
                 console.log("split called");
             } else {
-                userRef.child(sender).set(willSplit);
+                userRef.child(sender).set('yes');
             }
         });
     }
