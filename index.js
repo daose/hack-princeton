@@ -21,18 +21,15 @@ app.get('/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
-    console.log(req.body.entry[0]);
-    if(req.body.entry[0].postback) {
-        handlePostback(req.body.entry[0].sender.id);
-        res.sendStatus(200);
-    } else {
-        let messaging_events = req.body.entry[0].messaging
-        for (let i = 0; i < messaging_events.length; i++) {
-            let event = req.body.entry[0].messaging[i];
-            let sender = event.sender.id;
-            console.log('sender id: ' + sender);
+    let events = req.body.entry[0].messaging
+    for(let i = 0; i < events.length; i++){
+        let event = req.body.entry[0].messaging[i];
+        let sender = event.sender.id;
+        if(event.postback){
+            handlePostback(sender);
+        } else {
             if(sender === users[0]){
-                console.log('master sender detected');
+                console.log("temp master sender detected");
                 broadcastMessage(sender);
             }
         }
