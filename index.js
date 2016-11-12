@@ -70,7 +70,8 @@ function checkBalance(sender) {
                 console.log('Error: ', response.body.error);
             }
             console.log('body: ', body);
-            sendTextMessage(sender, body.balance.toString());
+            var json = JSON.parse(body);
+            sendTextMessage(sender, json.balance);
         });
     });
 }
