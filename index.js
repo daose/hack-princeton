@@ -16,6 +16,8 @@ const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
 const nessie = "5d5c8329d6efe2ee07156e373d9abbbc";
 const ocpUrl = 'https://api.projectoxford.ai/vision/v1.0/ocr';
 
+const rePattern = new RegExp(/\$?(\d+(\.\d\d)?)/);
+
 //Firebase Init
 admin.initializeApp({
      credential: admin.credential.cert(serviceAccount),
@@ -94,7 +96,7 @@ function ocrOnResponse(body) {
         if(typeof body[i] === 'object'){
             ocrOnResponse(body[i]);
         } else {
-            if(body[i].length < 6){
+            if(body[i].match(rePattern)){
                 console.log("leaf: " + body[i]);
             }
         }
