@@ -188,16 +188,18 @@ function sendPromptMessage(senderId, messageText, imageURL) {
                 type: "template",
                 payload: {
                     template_type: "generic",
-                    text: messageText,
-                    image_url: imageURL,
-                    buttons: [{
-                        type: "postback",
-                        title: "yes",
-                        payload: "yes"
-                    }, {
-                        type: "postback",
-                        title: "no",
-                        payload: "no"
+                    elements: [{
+                        title: messageText,
+                        image_url: imageURL,
+                        buttons: [{
+                            type: "postback",
+                            title: "yes",
+                            payload: "yes"
+                        }, {
+                            type: "postback",
+                            title: "no",
+                            payload: "no"
+                        }]
                     }]
                 }
             }
