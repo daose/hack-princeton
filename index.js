@@ -155,7 +155,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], getName(sender).toString() + " wants to split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
+            sendPromptMessage(users[i], String(getName(sender)) + " wants to split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
         }
     });
 }
@@ -287,11 +287,8 @@ function getName(fid){
             console.log('Error: ', response.body.error);
         }
         var json =JSON.parse(body);
-        console.log(json.first_name.toString());
-        console.log(json.last_name.toString());
         var fullName = json.first_name.toString() + " " + json.last_name.toString();
-        console.log(fullName);
-        return fullName;
+        return String(fullName);
     });
 }
 
