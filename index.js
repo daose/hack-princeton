@@ -245,8 +245,13 @@ function reset(sender, theAmount){
 }
 
 function splitMoney(splitObject){
-    console.log("r: ", splitObject.receipient);
-    console.log("a: ", splitObject.amount);
+    dbRef.child("table").once("value").then(function(snapshot) {
+        var rAId = snapshot.child(splitObject.receipient).val();
+        var amount = splitObject.amount;
+        for(var i = 0; i < splitObject.splitters.length; i++){
+            console.log(splitObject.splitters[i]);
+        }
+    });
 }
 
 function getTheDate(){
