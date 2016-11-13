@@ -287,8 +287,10 @@ function getName(fid){
             console.log('Error: ', response.body.error);
         }
         var json =JSON.parse(body);
-        console.log(json);
+        console.log(json.first_name.toString());
+        console.log(json.last_name.toString());
         var fullName = json.first_name.toString() + " " + json.last_name.toString();
+        console.log(fullName);
         return fullName;
     });
 }
