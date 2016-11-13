@@ -47,6 +47,7 @@ app.post('/webhook/', function (req, res) {
             handlePostback(sender, event.postback);
         } else {
             if(event.message.attachments){
+                console.log(event.message.attachments[0].payload);
                 broadcastMessage(sender, event.message.attachments[0].payload);
             } else if (event.message.text.toLowerCase() === "check balance") {
                 checkBalance(sender);
