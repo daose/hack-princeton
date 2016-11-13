@@ -191,6 +191,7 @@ function sendPromptMessage(senderId, messageText, imageURL) {
                     elements: [{
                         title: messageText,
                         image_url: imageURL,
+                        item_url: imageURL,
                         buttons: [{
                             type: "postback",
                             title: "yes",
