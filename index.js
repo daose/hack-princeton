@@ -247,7 +247,8 @@ function splitMoney(splitObject){
         var amount = splitObject.amount;
         for(var obj in splitObject.splitter){
             if(splitObject.splitter.hasOwnProperty(obj)){
-                console.log(obj);
+                console.log("key ", obj);
+                console.log('value ', splitObject.splitter[obj]);
             }
         }
     });
