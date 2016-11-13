@@ -246,7 +246,7 @@ function splitMoney(splitObject){
         var rAId = snapshot.child(splitObject.receipient).val();
         var amount = splitObject.amount;
         for(var obj in splitObject.splitter){
-            if(splitObject.splitters.hasOwnProperty(obj)){
+            if(splitObject.splitter.hasOwnProperty(obj)){
                 console.log(obj);
             }
         }
