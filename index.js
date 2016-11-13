@@ -288,7 +288,7 @@ function getName(fid){
         }
         var json =JSON.parse(body);
         console.log(json);
-        var fullName = json.first_Name.toString() + " " + json.last_name.toString();
+        var fullName = json.first_name.toString() + " " + json.last_name.toString();
         return fullName;
     });
 }
