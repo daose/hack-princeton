@@ -116,7 +116,7 @@ function checkBalance(sender) {
                 console.log('Error: ', response.body.error);
             }
             var json = JSON.parse(body);
-            sendTextMessage(sender, json.balance);
+            sendTextMessage(sender, json.balance.toFixed(2));
         });
     });
 }
