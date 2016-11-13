@@ -155,7 +155,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], "Split a total of $" + totalAmount + "?");
+            sendPromptMessage(users[i], "Split a total of $" + totalAmount + "?" , imagePayload.url);
         }
     });
 }
@@ -178,7 +178,7 @@ function ocrFindTotal(body, totalAmount) {
     return totalAmount;
 }
 
-function sendPromptMessage(senderId, messageText) {
+function sendPromptMessage(senderId, messageText, imageURL) {
     let messageData = {
         recipient: {
             id: senderId
@@ -187,8 +187,9 @@ function sendPromptMessage(senderId, messageText) {
             attachment: {
                 type: "template",
                 payload: {
-                    template_type: "button",
+                    template_type: "generic",
                     text: messageText,
+                    image_url: imageURL,
                     buttons: [{
                         type: "postback",
                         title: "yes",
