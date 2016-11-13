@@ -155,7 +155,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], "Split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
+            sendPromptMessage(users[i], getName(sender) + " wants to split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
         }
     });
 }
@@ -271,6 +271,21 @@ function splitMoney(splitObject){
         }
         sendTextMessage(splitObject.receipient, "$" + (count * amount).toFixed(2) + " was deposited into your account.");
         split.set({});
+    });
+}
+
+function getName(fid){
+    var theURL = "https://graph.facebook.com/v2.6/" + fid +"?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=" + token;
+    request({
+        url: theURL,
+        method: 'GET'
+    }, function(error, response, body) {
+        if(error){
+            console.log('Error sending message: ', error);
+        } else if(response.body.error){
+            console.log('Error: ', response.body.error);
+        }
+        return body.first_name + " " + body.last_name;
     });
 }
 
