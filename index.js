@@ -253,7 +253,7 @@ function splitMoney(splitObject){
                 }
             }
         }
-        amount = amount / count;
+        amount = amount / (count + 1);
         for(var key in splitObject.splitter){
             if(splitObject.splitter.hasOwnProperty(key)){
                 var sAId = snapshot.child(key).val();
