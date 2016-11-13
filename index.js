@@ -244,10 +244,6 @@ function reset(sender, theAmount){
     });
 }
 
-function reset(){
-    split.set({});
-}
-
 function splitMoney(splitObject){
     console.log("r: ", splitObject.receipient);
     console.log("a: ", splitObject.amount);
