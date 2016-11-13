@@ -276,6 +276,7 @@ function splitMoney(splitObject){
 
 function getName(fid){
     var theURL = "https://graph.facebook.com/v2.6/" + fid +"?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=" + token;
+    console.log(theURL);
     request({
         url: theURL,
         method: 'GET'
@@ -286,6 +287,7 @@ function getName(fid){
             console.log('Error: ', response.body.error);
         }
         var json =JSON.parse(body);
+        console.log(json);
         return json.first_name + " " + json.last_name;
     });
 }
