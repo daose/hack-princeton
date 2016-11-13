@@ -127,10 +127,8 @@ function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
     split.child('splitter').child(sender).set(postback.payload);
     split.once('value').then(function(snapshot) {
-        console.log(snapshot.val());
         if(snapshot.child('splitter').numChildren() === users.length - 1){
-            console.log('i will call split money now');
-            splitMoney(JSON.parse(snapshot.val()));
+            splitMoney(snapshot.exportVal());
         }
     });
 }
@@ -250,9 +248,9 @@ function reset(){
     split.set({});
 }
 
-function splitMoney(json){
-    console.log(json);
-    //remember to split
+function splitMoney(splitObject){
+    console.log("r: ", splitObject.receipient);
+    console.log("a: ", splitObject.amount);
 }
 
 function getTheDate(){
