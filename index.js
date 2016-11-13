@@ -150,12 +150,12 @@ function broadcastMessage(sender, imagePayload) {
         }
         var totalAmount = ocrFindTotal(body, 0);
         reset(sender, totalAmount);
-         
+        var senderName = getName(sender); 
         for(var i = 0; i < users.length; i++){
             if(users[i] === sender) {
                 continue;
             }
-            var msg = getName(sender) + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
+            var msg = senderName + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
             console.log("message: ", msg);
             sendPromptMessage(users[i], msg, imagePayload.url);
         }
