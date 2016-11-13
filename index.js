@@ -128,8 +128,8 @@ function handlePostback(sender, postback){
     split.child('splitter').child(sender).set(postback.payload);
     split.once('value').then(function(snapshot) {
         console.log(snapshot.val());
-        console.log("num of children: ", snapshot.child('splitter').numChildren());
-        if(snapshot.child('splitter').numChildren() === users.length() - 1){
+        if(snapshot.child('splitter').numChildren() === users.length - 1){
+            console.log('i will call split money now');
             splitMoney(snapshot.receipient, snapshot.amount, snapshot.child('splitter'));
         }
     });
