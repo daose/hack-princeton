@@ -245,10 +245,22 @@ function splitMoney(splitObject){
     dbRef.child("table").once("value").then(function(snapshot) {
         var rAId = snapshot.child(splitObject.receipient).val();
         var amount = splitObject.amount;
+        var count = 0;
         for(var obj in splitObject.splitter){
             if(splitObject.splitter.hasOwnProperty(obj)){
-                console.log("key ", obj);
-                console.log('value ', splitObject.splitter[obj]);
+                if(splitObject.splitter[obj] === 'yes'){
+                    count++;
+                }
+            }
+        }
+        amount = amount / count;
+        for(var key in splitObject.splitter){
+            if(splitObject.splitter.hasOwnProperty(key)){
+                var sAId = snapshot.child(key).val();
+                if(splitObject.splitter[key] === 'yes'){
+                    withdrawal(sAId, amount);
+                    deposit(rAId, amount);
+                }
             }
         }
     });
