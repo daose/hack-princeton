@@ -130,7 +130,7 @@ function handlePostback(sender, postback){
         split.child('splitter').child(sender).set('yes');
         split.once('value').then(function(snapshot) {
             console.log(snapshot.val());
-            console.log("num of children: ", snapshot.child('splitter').numChildren());
+            console.log("num of children: ", snapshot.child('splitter').numChildren() - 1);
             if(snapshot.child('splitter').numChildren() === users.length()){
                 console.log('time to split');
             }
