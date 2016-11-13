@@ -150,15 +150,16 @@ function broadcastMessage(sender, imagePayload) {
         }
         var totalAmount = ocrFindTotal(body, 0);
         reset(sender, totalAmount);
-        var senderName = getName(sender); 
-        for(var i = 0; i < users.length; i++){
-            if(users[i] === sender) {
-                continue;
+        getName(sender, function(senderName){
+            for(var i = 0; i < users.length; i++){
+                if(users[i] === sender) {
+                    continue;
+                }
+                var msg = senderName + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
+                console.log("message: ", msg);
+                sendPromptMessage(users[i], msg, imagePayload.url);
             }
-            var msg = senderName + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
-            console.log("message: ", msg);
-            sendPromptMessage(users[i], msg, imagePayload.url);
-        }
+        });
     });
 }
 
@@ -276,7 +277,7 @@ function splitMoney(splitObject){
     });
 }
 
-function getName(fid){
+function getName(fid, callback){
     var theURL = "https://graph.facebook.com/v2.6/" + fid +"?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=" + token;
     request({
         url: theURL,
@@ -290,7 +291,7 @@ function getName(fid){
         var json =JSON.parse(body);
         var fullName = json.first_name.toString() + " " + json.last_name.toString();
         console.log(fullName);
-        return fullName;
+        callback(fullName);
     });
 }
 
