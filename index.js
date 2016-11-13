@@ -129,7 +129,9 @@ function handlePostback(sender, postback){
     split.once('value').then(function(snapshot) {
         console.log(snapshot.val());
         console.log("num of children: ", snapshot.child('splitter').numChildren());
+        console.log("num of users: ", users.length() - 1);
         if(snapshot.child('splitter').numChildren() === users.length() - 1){
+            console.log('i will call split money now');
             splitMoney(snapshot.receipient, snapshot.amount, snapshot.child('splitter'));
         }
     });
