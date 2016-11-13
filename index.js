@@ -130,7 +130,7 @@ function handlePostback(sender, postback){
         console.log(snapshot.val());
         if(snapshot.child('splitter').numChildren() === users.length - 1){
             console.log('i will call split money now');
-            splitMoney(snapshot.receipient, snapshot.amount, snapshot.child('splitter'));
+            splitMoney(snapshot.child('receipient').val(), snapshot.child('amount').val(), snapshot.child('splitter').val());
         }
     });
 }
