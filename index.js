@@ -9,7 +9,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
-const users = ['1077146965714361', '1253903971335322' /*, '1249520891776599'*/ ];
+const users = ['1077146965714361', '1253903971335322', '1249520891776599'];
 const customerId = ['5827562a360f81f104547b3e', '582756a2360f81f104547b3f', '5827570d360f81f104547b40'];
 const token = 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD';
 const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
@@ -155,7 +155,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], "Split a total of $" + totalAmount + "?" , imagePayload.url);
+            sendPromptMessage(users[i], "Split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
         }
     });
 }
@@ -262,11 +262,11 @@ function splitMoney(splitObject){
                 if(splitObject.splitter[key] === 'yes'){
                     withdrawal(sAId, amount);
                     deposit(rAId, amount);
-                    sendTextMessage(key, "$" + amount + " was transferred to the recipient");
+                    sendTextMessage(key, "$" + amount.toFixed(2) + " was transferred to the recipient");
                 }
             }
         }
-        sendTextMessage(splitObject.receipient, "$" + count * amount + " was deposited into your account.");
+        sendTextMessage(splitObject.receipient, "$" + (count * amount).toFixed(2) + " was deposited into your account.");
         split.set({});
     });
 }
