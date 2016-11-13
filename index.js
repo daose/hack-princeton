@@ -245,6 +245,8 @@ function splitMoney(splitObject){
     dbRef.child("table").once("value").then(function(snapshot) {
         var rAId = snapshot.child(splitObject.receipient).val();
         var amount = splitObject.amount;
+        console.log("rAID ", rAId);
+        console.log("amount: ", amount);
         for(var obj in splitObject.splitters){
             if(splitObject.splitters.hasOwnProperty(obj)){
                 console.log(obj);
