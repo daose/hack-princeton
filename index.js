@@ -285,7 +285,8 @@ function getName(fid){
         } else if(response.body.error){
             console.log('Error: ', response.body.error);
         }
-        return body.first_name + " " + body.last_name;
+        var json =JSON.parse(body);
+        return json.first_name + " " + json.last_name;
     });
 }
 
