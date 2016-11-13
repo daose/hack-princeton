@@ -154,7 +154,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], "Split a total of " + totalAmount + "?");
+            sendPromptMessage(users[i], "Split a total of $" + totalAmount + "?");
         }
     });
 }
@@ -260,9 +260,12 @@ function splitMoney(splitObject){
                 if(splitObject.splitter[key] === 'yes'){
                     withdrawal(sAId, amount);
                     deposit(rAId, amount);
+                    sendTextMessage(key, "$" + amount + " was transferred to the recipient");
                 }
             }
         }
+        sendTextMessage(splitObject.receipient, "$" + count * amount + " was deposited into your account.");
+        split.set({});
     });
 }
 
