@@ -27,8 +27,8 @@ var db = admin.database();
 var dbRef = db.ref("bot");
 var split = dbRef.child("split");
 
-var countedYes=0;
-var counted=0;
+//var countedYes=0;
+//var counted=0;
 
 //Server Init
 app.set('port', (process.env.PORT || 5000));
