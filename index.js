@@ -155,7 +155,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], getName(sender) + " wants to split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
+            sendPromptMessage(users[i], getName(sender).toString() + " wants to split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
         }
     });
 }
