@@ -9,7 +9,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
-const users = ['1077146965714361', '1253903971335322' , '1249520891776599'];
+const users = ['1077146965714361', '1253903971335322' /*, '1249520891776599'*/ ];
 const customerId = ['5827562a360f81f104547b3e', '582756a2360f81f104547b3f', '5827570d360f81f104547b40'];
 const token = 'EAAXQIOPTDSsBAExBqmK0OpIC8ARLpVRZBeuM3FbYjeEN7rYJCO1rs9FLZBbjbncAZCEVfunLhH5ABOwYJqnOb5E2vVKTuihuN7ZBk0uAhZBiPlJ2tHZBIrwlhvJyh01zhO0Le1O9rZAhy2ZAhZBcLZCXxjX5caXXVTMVekMeJm2lcGbQZDZD';
 const ocpKey = '6d5e8cdca22c4b8085c572feded478db';
@@ -26,9 +26,6 @@ admin.initializeApp({
 var db = admin.database();
 var dbRef = db.ref("bot");
 var split = dbRef.child("split");
-
-//var countedYes=0;
-//var counted=0;
 
 //Server Init
 app.set('port', (process.env.PORT || 5000));
@@ -248,8 +245,10 @@ function splitMoney(splitObject){
     dbRef.child("table").once("value").then(function(snapshot) {
         var rAId = snapshot.child(splitObject.receipient).val();
         var amount = splitObject.amount;
-        for(var i = 0; i < splitObject.splitters.length; i++){
-            console.log(splitObject.splitters[i]);
+        for(var obj in splitObject.splitters){
+            if(splitObject.splitters.hasOwnProperty(obj)){
+                console.log(obj);
+            }
         }
     });
 }
