@@ -125,54 +125,14 @@ function checkBalance(sender) {
 
 function handlePostback(sender, postback){
     console.log("handlePostback: ", postback);
-    var userRef = split.child("splitter");
-    if(postback.payload === 'yes'){
-        split.child('splitter').child(sender).set('yes');
-        split.once('value').then(function(snapshot) {
-            console.log(snapshot.val());
-            console.log("num of children: ", snapshot.child('splitter').numChildren() - 1);
-            if(snapshot.child('splitter').numChildren() === users.length()){
-                console.log('time to split');
-            }
-        });
-    }
-    /*
-    if(postback.payload === 'yes'){
-        console.log("yes called");
-        split.once('value').then(function(snapshot) {
-            if(snapshot.hasChild('splitter')){
-                if(snapshot.child('splitter').numChildren() === users.length() - 1) {
-                    if(!snapshot.child('splitter').hasChild(sender)){
-                        console.log('split called');
-                    } 
-                }
-            }
-            snapshot.child('splitter').child(sender).set('yes');
-        });
-    }
-    */
-
-    /*
-    //get the value of split.recepient
-    split.child("receipient").once('value').then(function(snapshot) {
-    //if the receipient tries to send money to himself, ignore it
-        if(sender !== snapshot.val()){
-            userRef.child(sender).once('value').then(function(snap){
-                var senderResponse = snap.val();
-                if(senderResponse === undefined) {
-                    counted++;
-                }
-                if((senderResponse === undefined || senderResponse==="no") && postback.payload==="yes"){ 
-                    countedYes++;
-                }
-                if(senderResponse === "yes" && postback.payload === "no"){
-                    countedYes--;
-                }
-            });
-            userRef.child(sender).set(postback.payload);
+    split.child('splitter').child(sender).set(postback.payload);
+    split.once('value').then(function(snapshot) {
+        console.log(snapshot.val());
+        console.log("num of children: ", snapshot.child('splitter').numChildren());
+        if(snapshot.child('splitter').numChildren() === users.length() - 1){
+            splitMoney(snapshot.receipient, snapshot.amount, snapshot.child('splitter'));
         }
     });
-    */
 }
 
 function broadcastMessage(sender, imagePayload) {
@@ -286,7 +246,14 @@ function reset(sender, theAmount){
     });
 }
 
-function splitMoney(){
+function reset(){
+    split.set({});
+}
+
+function splitMoney(recipient, amount, senders){
+    console.log('recipient: ', recipient);
+    console.log('amount: ', amount);
+    console.log('senders: ', senders);
 //remember to clear split at the end
 }
 
