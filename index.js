@@ -155,7 +155,7 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            var msg = String(getName(sender)) + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
+            var msg = getName(sender) + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
             console.log("message: ", msg);
             sendPromptMessage(users[i], msg, imagePayload.url);
         }
@@ -289,7 +289,8 @@ function getName(fid){
         }
         var json =JSON.parse(body);
         var fullName = json.first_name.toString() + " " + json.last_name.toString();
-        return String(fullName);
+        console.log(fullName);
+        return fullName;
     });
 }
 
