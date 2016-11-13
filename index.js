@@ -155,7 +155,9 @@ function broadcastMessage(sender, imagePayload) {
             if(users[i] === sender) {
                 continue;
             }
-            sendPromptMessage(users[i], String(getName(sender)) + " wants to split a total of $" + totalAmount.toFixed(2) + "?", imagePayload.url);
+            var msg = String(getName(sender)) + " wants to split a total of $" + totalAmount.toFixed(2) + "?";
+            console.log("message: ", msg);
+            sendPromptMessage(users[i], msg, imagePayload.url);
         }
     });
 }
@@ -276,7 +278,6 @@ function splitMoney(splitObject){
 
 function getName(fid){
     var theURL = "https://graph.facebook.com/v2.6/" + fid +"?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=" + token;
-    console.log(theURL);
     request({
         url: theURL,
         method: 'GET'
