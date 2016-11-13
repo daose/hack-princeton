@@ -130,7 +130,7 @@ function handlePostback(sender, postback){
         console.log(snapshot.val());
         if(snapshot.child('splitter').numChildren() === users.length - 1){
             console.log('i will call split money now');
-            splitMoney(snapshot.child('receipient').val(), snapshot.child('amount').val(), snapshot.child('splitter').val());
+            splitMoney(JSON.parse(snapshot.val()));
         }
     });
 }
@@ -250,11 +250,9 @@ function reset(){
     split.set({});
 }
 
-function splitMoney(recipient, amount, senders){
-    console.log('recipient: ', recipient);
-    console.log('amount: ', amount);
-    console.log('senders: ', senders);
-//remember to clear split at the end
+function splitMoney(json){
+    console.log(json);
+    //remember to split
 }
 
 function getTheDate(){
